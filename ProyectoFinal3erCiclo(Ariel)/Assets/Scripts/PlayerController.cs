@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator anim;
     [SerializeField] private float x;
     [SerializeField] private float y;
+    [SerializeField] public Inventory inventory;
     public int SafeObjects = 2;
     public int UnSafeObjects = 2;
     // Start is called before the first frame update
@@ -27,5 +28,13 @@ public class PlayerController : MonoBehaviour
         transform.Translate(0, 0, y * Time.deltaTime * MovementVelocity);
         anim.SetFloat("VelX", x);
         anim.SetFloat("VelY", y);
+    }
+    void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "SafeObject" && Input.GetKeyDown(KeyCode.E))
+        {
+            inventory.SaveObject(other.gameObject);
+            other.gameObject.SetActive(false);
+        }
     }
 }
