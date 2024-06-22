@@ -7,39 +7,42 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] public Inventory inventory;
     [SerializeField] private float MovementVelocity;
-    [SerializeField] private float RotateVelocity;
-    [SerializeField] Animator anim;
-    [SerializeField] private Vector2 movementInput;
-    [SerializeField] private Vector2 lookInput;
+    [SerializeField] private Transform cameraTransform; // Referencia a la transformación de la cámara
 
-    void Awake()
+    private Animator anim;
+    private Vector2 movementInput;
+
+    private void Awake()
     {
         anim = GetComponent<Animator>();
+        cameraTransform = Camera.main.transform; // Asigna la transformación de la cámara
     }
 
-    void Update()
+    private void Update()
     {
+        // Obtén la dirección de la cámara
+        Vector3 cameraForward = cameraTransform.forward;
+        cameraForward.y = 0f; // Ignora la componente Y para mantener al jugador en el plano horizontal
+
+        // Calcula la rotación deseada para el jugador
+        Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
+
+        // Aplica la rotación al jugador
+        transform.rotation = targetRotation;
+
+        // Movimiento similar al que ya tienes
         Vector3 forwardMovement = transform.forward * movementInput.y * MovementVelocity * Time.deltaTime;
         Vector3 rightMovement = transform.right * movementInput.x * MovementVelocity * Time.deltaTime;
         transform.position += forwardMovement + rightMovement;
+
+        // Actualiza las animaciones
         anim.SetFloat("VelX", movementInput.x);
         anim.SetFloat("VelY", movementInput.y);
-        RotatePlayer();
     }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
-    }
-
-    public void OnLook(InputAction.CallbackContext context)
-    {
-        lookInput = context.ReadValue<Vector2>();
-    }
-    private void RotatePlayer()
-    {
-        float mouseX = lookInput.x * RotateVelocity * Time.deltaTime;
-        transform.Rotate(0, mouseX, 0);
     }
     void OnTriggerStay(Collider other)
     {
@@ -50,4 +53,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+
+
+
 
