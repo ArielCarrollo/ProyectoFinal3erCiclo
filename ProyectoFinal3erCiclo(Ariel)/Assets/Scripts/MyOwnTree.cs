@@ -35,12 +35,12 @@ public class MyOwnTree<T> : MonoBehaviour
         else
         {
             Node newNode = new Node(value);
-            //Node father = GetFather(fatherValue);
-            //father.AddChild(newNode);
+            Node father = GetFather(fatherValue);
+            father.AddChild(newNode);
             listAllNodes.Add(newNode);
         }
     }
-    /*private Node GetFather(T value)
+    private Node GetFather(T value)
     {
         dynamic fatherValue = value;
         Node father = null;
@@ -53,7 +53,7 @@ public class MyOwnTree<T> : MonoBehaviour
             }
         }
         return father;
-    }*/
+    }
 
     public void PreOrden()
     {

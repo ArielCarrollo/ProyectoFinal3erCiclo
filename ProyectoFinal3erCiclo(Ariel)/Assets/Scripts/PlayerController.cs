@@ -5,29 +5,41 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float MovementVelocity = 5f;
-    [SerializeField] private float RotateVelocity = 200f;
-    [SerializeField] Animator anim;
-    [SerializeField] private float x;
-    [SerializeField] private float y;
     [SerializeField] public Inventory inventory;
-    public int SafeObjects = 2;
-    public int UnSafeObjects = 2;
-    // Start is called before the first frame update
+    [SerializeField] private float MovementVelocity;
+    [SerializeField] private float RotateVelocity;
+    [SerializeField] Animator anim;
+    [SerializeField] private Vector2 movementInput;
+    [SerializeField] private Vector2 lookInput;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        x = Input.GetAxis("Horizontal");
-        y = Input.GetAxis("Vertical");
-        transform.Rotate(0, x * Time.deltaTime * RotateVelocity, 0);
-        transform.Translate(0, 0, y * Time.deltaTime * MovementVelocity);
-        anim.SetFloat("VelX", x);
-        anim.SetFloat("VelY", y);
+        Vector3 forwardMovement = transform.forward * movementInput.y * MovementVelocity * Time.deltaTime;
+        Vector3 rightMovement = transform.right * movementInput.x * MovementVelocity * Time.deltaTime;
+        transform.position += forwardMovement + rightMovement;
+        anim.SetFloat("VelX", movementInput.x);
+        anim.SetFloat("VelY", movementInput.y);
+        RotatePlayer();
+    }
+
+    public void OnMovement(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnLook(InputAction.CallbackContext context)
+    {
+        lookInput = context.ReadValue<Vector2>();
+    }
+    private void RotatePlayer()
+    {
+        float mouseX = lookInput.x * RotateVelocity * Time.deltaTime;
+        transform.Rotate(0, mouseX, 0);
     }
     void OnTriggerStay(Collider other)
     {
@@ -38,3 +50,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+
