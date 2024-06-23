@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] public Inventory inventory;
     [SerializeField] private float MovementVelocity;
-    [SerializeField] private Transform cameraTransform; // Referencia a la transformación de la cámara
+    [SerializeField] private Transform cameraTransform; 
 
     private Animator anim;
     private Vector2 movementInput;
@@ -15,29 +15,28 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        cameraTransform = Camera.main.transform; // Asigna la transformación de la cámara
+        cameraTransform = Camera.main.transform; 
     }
 
     private void Update()
     {
-        // Obtén la dirección de la cámara
         Vector3 cameraForward = cameraTransform.forward;
-        cameraForward.y = 0f; // Ignora la componente Y para mantener al jugador en el plano horizontal
+        cameraForward.y = 0f; 
 
-        // Calcula la rotación deseada para el jugador
         Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
 
-        // Aplica la rotación al jugador
         transform.rotation = targetRotation;
 
-        // Movimiento similar al que ya tienes
         Vector3 forwardMovement = transform.forward * movementInput.y * MovementVelocity * Time.deltaTime;
         Vector3 rightMovement = transform.right * movementInput.x * MovementVelocity * Time.deltaTime;
         transform.position += forwardMovement + rightMovement;
 
-        // Actualiza las animaciones
-        anim.SetFloat("VelX", movementInput.x);
-        anim.SetFloat("VelY", movementInput.y);
+        anim.SetInteger("VelX", (int)movementInput.x);
+        anim.SetInteger("VelY", (int)movementInput.y);
+        if(movementInput.y == 1 && movementInput.x == 1)
+        {
+            anim.SetTrigger("Run");
+        }
     }
 
     public void OnMovement(InputAction.CallbackContext context)
