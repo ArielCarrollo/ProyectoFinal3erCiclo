@@ -68,14 +68,7 @@ public class PlayerController : MonoBehaviour
             // Implement throwing logic here
         }
     }
-    void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "SafeObject")
-        {
-            inventory.SaveObject(other.gameObject);
-            other.gameObject.SetActive(false);
-        }
-    }
+    
 }
 
 
