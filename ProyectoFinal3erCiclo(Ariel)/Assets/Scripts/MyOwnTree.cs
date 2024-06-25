@@ -8,21 +8,22 @@ public class MyOwnTree<T> : MonoBehaviour
     class Node
     {
         public T Value { get; set; }
-        public List<Node> listChilds;
+        public ListaInventadaPropia<Node> listChilds;
 
         public Node(T value)
         {
             Value = value;
-            listChilds = new List<Node>();
+            listChilds = new ListaInventadaPropia<Node>();
         }
 
         public void AddChild(Node node)
         {
-            listChilds.Add(node);
+            listChilds.InsertNodeAtEnd(node);
         }
     }
+
     private Node root;
-    private List<Node> listAllNodes = new List<Node>();
+    private ListaInventadaPropia<Node> listAllNodes = new ListaInventadaPropia<Node>();
 
     public void AddNode(T value, T fatherValue)
     {
@@ -30,27 +31,30 @@ public class MyOwnTree<T> : MonoBehaviour
         {
             Node newNode = new Node(value);
             root = newNode;
-            listAllNodes.Add(newNode);
+            listAllNodes.InsertNodeAtEnd(newNode);
         }
         else
         {
             Node newNode = new Node(value);
             Node father = GetFather(fatherValue);
             father.AddChild(newNode);
-            listAllNodes.Add(newNode);
+            listAllNodes.InsertNodeAtEnd(newNode);
         }
     }
+
     private Node GetFather(T value)
     {
         dynamic fatherValue = value;
         Node father = null;
-        for (int i = 0; i < listAllNodes.Count; ++i)
+        Node currentNode = listAllNodes.ObtainNodeAtStart();
+        while (currentNode != null)
         {
-            if (listAllNodes[i].Value == fatherValue)
+            if (currentNode.Value.Equals(fatherValue))
             {
-                father = listAllNodes[i];
+                father = currentNode;
                 break;
             }
+            currentNode = listAllNodes.ObtainNodeAtEnd();
         }
         return father;
     }
@@ -66,9 +70,11 @@ public class MyOwnTree<T> : MonoBehaviour
         if (node != null)
         {
             Debug.Log(node.Value + " ");
-            for (int i = 0; i < node.listChilds.Count; ++i)
+            Node currentNode = node.listChilds.ObtainNodeAtStart();
+            while (currentNode != null)
             {
-                PreOrdenRecursive(node.listChilds[i]);
+                PreOrdenRecursive(currentNode);
+                currentNode = node.listChilds.ObtainNodeAtEnd();
             }
         }
     }
@@ -83,9 +89,11 @@ public class MyOwnTree<T> : MonoBehaviour
     {
         if (node != null)
         {
-            for (int i = 0; i < node.listChilds.Count; ++i)
+            Node currentNode = node.listChilds.ObtainNodeAtStart();
+            while (currentNode != null)
             {
-                PostOrdenRecursive(node.listChilds[i]);
+                PostOrdenRecursive(currentNode);
+                currentNode = node.listChilds.ObtainNodeAtEnd();
             }
             Debug.Log(node.Value + " ");
         }
@@ -101,31 +109,18 @@ public class MyOwnTree<T> : MonoBehaviour
     {
         if (node != null)
         {
-            if (node.listChilds.Count > 0)
+            if (node.listChilds.Length > 0)
             {
-                InOrdenRecursive(node.listChilds[0]);
+                InOrdenRecursive(node.listChilds.ObtainNodeAtStart());
             }
             Debug.Log(node.Value + " ");
-            for (int i = 1; i < node.listChilds.Count; ++i)
+            Node currentNode = node.listChilds.ObtainNodeAtEnd();
+            while (currentNode != null)
             {
-                InOrdenRecursive(node.listChilds[i]);
+                InOrdenRecursive(currentNode);
+                currentNode = node.listChilds.ObtainNodeAtEnd();
             }
         }
-    }
-
-    public void InDepthSearch()
-    {
-        Queue<Node> queue = new Queue<Node>();
-        queue.Enqueue(root);
-        while (queue.Count > 0)
-        {
-            Node currentNode = queue.Dequeue();
-            Debug.Log(currentNode.Value + " ");
-            for (int i = 0; i < currentNode.listChilds.Count; ++i)
-            {
-                queue.Enqueue(currentNode.listChilds[i]);
-            }
-        }
-        Debug.Log("\n");
     }
 }
+

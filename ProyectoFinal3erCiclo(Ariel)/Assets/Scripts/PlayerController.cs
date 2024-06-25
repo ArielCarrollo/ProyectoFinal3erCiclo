@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
     private Vector2 movementInput;
-    private bool isPickingUp = false; // Flag to track "Pick Up" animation state
+    private bool isPickingUp = false; 
 
     private void Awake()
     {
@@ -34,29 +34,66 @@ public class PlayerController : MonoBehaviour
 
         anim.SetInteger("VelX", (int)movementInput.x);
         anim.SetInteger("VelY", (int)movementInput.y);
+        anim.SetFloat("VelXF", movementInput.x);
+        anim.SetFloat("VelYF", movementInput.y);
 
-        // Check for animation completion using normalized time
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && isPickingUp)
         {
-            isPickingUp = false; // Reset flag after animation finishes
-            anim.SetBool("Pick", false); // Deactivate "Pick" animation
+            isPickingUp = false; 
+            anim.SetBool("Pick", false); 
         }
         if (isPickingUp)
         {
-            movementInput = Vector2.zero; // Set movement input to zero
+            movementInput = Vector2.zero; 
         }
+        DiagonalAnimations();
     }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
     }
+    public void DiagonalAnimations()
+    {
+        if (movementInput.x > 0.7f && movementInput.y > 0.7)
+        {
+            anim.SetBool("DiagonalMirror", true);
+        }
+        else
+        {
+            anim.SetBool("DiagonalMirror", false);
+        }
+        if (movementInput.x < -0.7f && movementInput.y > 0.7)
+        {
+            anim.SetBool("Diagonal", true);
+        }
+        else
+        {
+            anim.SetBool("Diagonal", false);
+        }
+        if(movementInput.x < -0.7f && movementInput.y < -0.7)
+        {
+            anim.SetBool("BackDiagonalMirror", true);
+        }
+        else
+        {
+            anim.SetBool("BackDiagonalMirror", false);
+        }
+        if(movementInput.x > 0.7f && movementInput.y < -0.7)
+        {
+            anim.SetBool("BackDiagonal", true);
+        }
+        else
+        {
+            anim.SetBool("BackDiagonal", false);
+        }
+    }
 
     public void PickUp(InputAction.CallbackContext context)
     {
-        if (context.performed && !isPickingUp) // Trigger animation only once
+        if (context.performed && !isPickingUp) 
         {
-            isPickingUp = true; // Set flag to track animation state
+            isPickingUp = true; 
             anim.SetBool("Pick", true);
         }
     }
