@@ -8,6 +8,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Inventory inventory;
     [SerializeField] private float MovementVelocity;
     [SerializeField] private Transform cameraTransform;
+    private Vector3 cameraForward;
+    private Quaternion targetRotation;
+    private Vector3 forwardMovement;
+    private Vector3 rightMovement;
 
     private Animator anim;
     private Vector2 movementInput;
@@ -18,18 +22,17 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         cameraTransform = Camera.main.transform;
     }
-
     private void Update()
     {
-        Vector3 cameraForward = cameraTransform.forward;
+        cameraForward = cameraTransform.forward;
         cameraForward.y = 0f;
 
-        Quaternion targetRotation = Quaternion.LookRotation(cameraForward);
+        targetRotation = Quaternion.LookRotation(cameraForward);
 
         transform.rotation = targetRotation;
 
-        Vector3 forwardMovement = transform.forward * movementInput.y * MovementVelocity * Time.deltaTime;
-        Vector3 rightMovement = transform.right * movementInput.x * MovementVelocity * Time.deltaTime;
+        forwardMovement = transform.forward * movementInput.y * MovementVelocity * Time.deltaTime;
+        rightMovement = transform.right * movementInput.x * MovementVelocity * Time.deltaTime;
         transform.position += forwardMovement + rightMovement;
 
         anim.SetInteger("VelX", (int)movementInput.x);
@@ -48,7 +51,6 @@ public class PlayerController : MonoBehaviour
         }
         DiagonalAnimations();
     }
-
     public void OnMovement(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
@@ -88,7 +90,6 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("BackDiagonal", false);
         }
     }
-
     public void PickUp(InputAction.CallbackContext context)
     {
         if (context.performed && !isPickingUp) 
@@ -97,15 +98,13 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Pick", true);
         }
     }
-
     public void Throw(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            // Implement throwing logic here
+            //
         }
     }
-    
 }
 
 
