@@ -46,15 +46,13 @@ public class MyOwnTree<T>
     {
         dynamic fatherValue = value;
         Node father = null;
-        Node currentNode = listAllNodes.ObtainNodeAtStart();
-        while (currentNode != null)
+        for (int i = 0; i < listAllNodes.Length; ++i)
         {
-            if (currentNode.Value.Equals(fatherValue))
+            if (listAllNodes.ObtainNodeAtPosition(i).Value == fatherValue)
             {
-                father = currentNode;
+                father = listAllNodes.ObtainNodeAtPosition(i);
                 break;
             }
-            currentNode = listAllNodes.ObtainNodeAtEnd();
         }
         return father;
     }
