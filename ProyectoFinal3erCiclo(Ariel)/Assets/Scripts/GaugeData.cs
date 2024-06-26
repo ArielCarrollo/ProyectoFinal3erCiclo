@@ -6,7 +6,6 @@ using UnityEngine;
 public class GaugeData : ScriptableObject
 {
     public float currentValue = 0f;
-
     public void ResetGauge()
     {
         currentValue = 0f;

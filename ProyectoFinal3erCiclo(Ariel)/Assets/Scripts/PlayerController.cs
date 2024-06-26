@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Inventory inventory;
     [SerializeField] private float MovementVelocity;
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private GaugeData gaugeData;  // Nueva referencia a GaugeData
     private Vector3 cameraForward;
     private Quaternion targetRotation;
     private Vector3 forwardMovement;
@@ -15,20 +16,22 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
     private Vector2 movementInput;
-    private bool isPickingUp = false; 
+    private bool isPickingUp = false;
+    private GameObject currentObject;  // Objeto actual que se está recogiendo
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         cameraTransform = Camera.main.transform;
+        gaugeData.ResetGauge();
     }
+
     private void Update()
     {
         cameraForward = cameraTransform.forward;
         cameraForward.y = 0f;
 
         targetRotation = Quaternion.LookRotation(cameraForward);
-
         transform.rotation = targetRotation;
 
         forwardMovement = transform.forward * movementInput.y * MovementVelocity * Time.deltaTime;
@@ -42,19 +45,28 @@ public class PlayerController : MonoBehaviour
 
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && isPickingUp)
         {
-            isPickingUp = false; 
-            anim.SetBool("Pick", false); 
+            isPickingUp = false;
+            anim.SetBool("Pick", false);
+            if (currentObject != null)
+            {
+                currentObject.GetComponent<EsfumarseAlRecoger>().Esfumarse();
+                currentObject = null;  
+            }
         }
+
         if (isPickingUp)
         {
-            movementInput = Vector2.zero; 
+            movementInput = Vector2.zero;
         }
+
         DiagonalAnimations();
     }
+
     public void OnMovement(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
     }
+
     public void DiagonalAnimations()
     {
         if (movementInput.x > 0.7f && movementInput.y > 0.7)
@@ -73,7 +85,7 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("Diagonal", false);
         }
-        if(movementInput.x < -0.7f && movementInput.y < -0.7)
+        if (movementInput.x < -0.7f && movementInput.y < -0.7)
         {
             anim.SetBool("BackDiagonalMirror", true);
         }
@@ -81,7 +93,7 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("BackDiagonalMirror", false);
         }
-        if(movementInput.x > 0.7f && movementInput.y < -0.7)
+        if (movementInput.x > 0.7f && movementInput.y < -0.7)
         {
             anim.SetBool("BackDiagonal", true);
         }
@@ -90,22 +102,53 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("BackDiagonal", false);
         }
     }
+
     public void PickUp(InputAction.CallbackContext context)
     {
-        if (context.performed && !isPickingUp) 
+        if (context.performed && !isPickingUp)
         {
-            isPickingUp = true; 
-            anim.SetBool("Pick", true);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+
+            // Variable para verificar si se ha encontrado un SafeObject
+            bool foundSafeObject = false;
+
+            // Iterar a través de los colliders detectados
+            for (int i = 0; i < hitColliders.Length; i++)
+            {
+                if (hitColliders[i].CompareTag("SafeObject"))
+                {
+                    // Marcar que se ha encontrado un SafeObject
+                    foundSafeObject = true;
+
+                    // Ejecutar la animación de recoger
+                    isPickingUp = true;
+                    anim.SetBool("Pick", true);
+                    currentObject = hitColliders[i].gameObject;
+
+                    // Llenar la gauge en un 20% solo una vez
+                    if (gaugeData != null)
+                    {
+                        gaugeData.AddToGauge(20f);
+                    }
+
+                    // Salir del bucle una vez que se ha encontrado un objeto seguro
+                    break;
+                }
+            }
+
+            // Si no se encontró ningún SafeObject, mostrar un mensaje de depuración
+            if (!foundSafeObject)
+            {
+                Debug.Log("No se encontraron objetos seguros cerca del jugador.");
+            }
         }
-    }
-    public void Throw(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+        else if (isPickingUp)
         {
-            //
+            Debug.Log("Ya se está recogiendo un objeto.");
         }
     }
 }
+
 
 
 

@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class EsfumarseAlRecoger : MonoBehaviour
 {
-    void Start()
+    public void Esfumarse()
     {
         transform.DOScale(Vector3.zero, 1f).OnComplete(() => {
             gameObject.SetActive(false);
