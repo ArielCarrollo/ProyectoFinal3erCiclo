@@ -305,7 +305,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Base Layer
+  m_Name: Player
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 6361457628049359182}
@@ -809,7 +809,7 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: DiagonalMirror
     m_EventTreshold: 0
-  - m_ConditionMode: 3
+  - m_ConditionMode: 6
     m_ConditionEvent: VelY
     m_EventTreshold: 0
   - m_ConditionMode: 2
@@ -982,7 +982,7 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
-    m_Name: Base Layer
+    m_Name: Player
     m_StateMachine: {fileID: -4933790945928110001}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -1419,7 +1419,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 196a5be98f33a454a986e3ff38b9b1ee, type: 2}
+  m_Motion: {fileID: 7400000, guid: 73b7d5bd14374e341ab5f09234e4716d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1464,12 +1464,6 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: Pick
-    m_EventTreshold: 0
-  - m_ConditionMode: 3
-    m_ConditionEvent: VelY
-    m_EventTreshold: 0
-  - m_ConditionMode: 6
-    m_ConditionEvent: VelX
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -20445105004849743}

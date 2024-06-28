@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MyOwnTree<T> 
 {
-    class Node
+    public class Node
     {
         public T Value { get; set; }
         public ListaInventadaPropia<Node> listChilds;
@@ -56,7 +56,18 @@ public class MyOwnTree<T>
         }
         return father;
     }
-
+    public Node FindNode(T value)
+    {
+        dynamic NodeToFind = value;
+        for (int i = 0; i < listAllNodes.Length; ++i)
+        {
+            if (listAllNodes.ObtainNodeAtPosition(i).Value == NodeToFind)
+            {
+                return listAllNodes.ObtainNodeAtPosition(i);
+            }
+        }
+        return null;
+    }
     public void PreOrden()
     {
         PreOrdenRecursive(root);

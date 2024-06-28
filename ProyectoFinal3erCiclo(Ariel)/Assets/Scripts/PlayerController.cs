@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Inventory inventory;
     [SerializeField] private float MovementVelocity;
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] private GaugeData gaugeData;  // Nueva referencia a GaugeData
+    [SerializeField] private GaugeData gaugeData;  
     private Vector3 cameraForward;
     private Quaternion targetRotation;
     private Vector3 forwardMovement;
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Vector2 movementInput;
     private bool isPickingUp = false;
-    private GameObject currentObject;  // Objeto actual que se está recogiendo
+    private GameObject currentObject;  
 
     private void Awake()
     {
@@ -109,34 +109,25 @@ public class PlayerController : MonoBehaviour
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
 
-            // Variable para verificar si se ha encontrado un SafeObject
             bool foundSafeObject = false;
 
-            // Iterar a través de los colliders detectados
             for (int i = 0; i < hitColliders.Length; i++)
             {
-                if (hitColliders[i].CompareTag("SafeObject"))
+                if (hitColliders[i].tag == "SafeObject")
                 {
-                    // Marcar que se ha encontrado un SafeObject
                     foundSafeObject = true;
 
-                    // Ejecutar la animación de recoger
                     isPickingUp = true;
                     anim.SetBool("Pick", true);
                     currentObject = hitColliders[i].gameObject;
 
-                    // Llenar la gauge en un 20% solo una vez
                     if (gaugeData != null)
                     {
                         gaugeData.AddToGauge(20f);
                     }
-
-                    // Salir del bucle una vez que se ha encontrado un objeto seguro
                     break;
                 }
             }
-
-            // Si no se encontró ningún SafeObject, mostrar un mensaje de depuración
             if (!foundSafeObject)
             {
                 Debug.Log("No se encontraron objetos seguros cerca del jugador.");

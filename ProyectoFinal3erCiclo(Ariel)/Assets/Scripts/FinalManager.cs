@@ -18,46 +18,51 @@ public class FinalManager : MonoBehaviour
     void Start()
     {
         EndsTree = new MyOwnTree<Image>();
+        if (Root == null)
+        {
+            Debug.LogError("Root no está asignado.");
+            return;
+        }
+
+        EndsTree.AddNode(Root, Root); 
         EndsTree.AddNode(Final1, Root);
         EndsTree.AddNode(Final2, Root);
         EndsTree.AddNode(Final3, Root);
         EndsTree.AddNode(Final4, Root);
+        EndsTree.AddNode(Final5, Root);
+
         if (gaugestatus != null)
         {
             finalImage.sprite = GetFinalBasedOnGauge(gaugestatus.currentValue).sprite;
-        }
-        else
-        {
-            Debug.Log("GaugeData no está asignado en FinalManager.");
         }
     }
 
     public Image GetFinalBasedOnGauge(float gaugeValue)
     {
-        Image Final = Root;
+        Image final = Root;
 
         if (gaugeValue == 20f)
         {
-            Final = Final1;
+            final = EndsTree.FindNode(Final1).Value;
         }
         else if (gaugeValue == 40f)
         {
-            Final = Final2;
+            final = EndsTree.FindNode(Final2).Value;
         }
         else if (gaugeValue == 60f)
         {
-            Final = Final3;
+            final = EndsTree.FindNode(Final3).Value;
         }
         else if (gaugeValue == 80f)
         {
-            Final = Final4;
+            final = EndsTree.FindNode(Final4).Value;
         }
         else if (gaugeValue == 100f)
         {
-            Final = Final5;
+            final = EndsTree.FindNode(Final5).Value;
         }
-
-        return Final;
+        return final;
     }
 }
+
 
