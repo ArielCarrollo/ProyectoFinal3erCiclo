@@ -5,28 +5,20 @@ using UnityEngine;
 public class CanvasManager : MonoBehaviour
 {
     public GameObject MusicSettings;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool Onview = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void ShowAudioSettings()
     {
-        if (MusicSettings.activeSelf == false)
+        if (Onview == false || Input.GetKey(KeyCode.Escape))
         {
-            MusicSettings.SetActive(true);
-            Time.timeScale = 0f;
+            Onview = true;
+            MusicSettings.GetComponent<TransitionSettings>().Move();
         }
         else
         {
-            MusicSettings.SetActive(false);
-            Time.timeScale = 1f;
+            Onview = false;
+            //MusicSettings.SetActive(false);
+            MusicSettings.GetComponent<TransitionSettings>().ReverseMove();
         }
     }
     public void QuitGame()
