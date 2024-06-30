@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
 
             bool foundSafeObject = false;
-
+            bool foundUnSafeObject = false;
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 if (hitColliders[i].tag == "SafeObject")
@@ -130,10 +130,28 @@ public class PlayerController : MonoBehaviour
                     }
                     break;
                 }
+                else if (hitColliders[i].tag == "UnSafeObject")
+                {
+                    foundUnSafeObject = true;
+
+                    isPickingUp = true;
+                    anim.SetBool("Pick", true);
+                    currentObject = hitColliders[i].gameObject;
+
+                    if (gaugeData != null)
+                    {
+                        gaugeData.AddToGauge(-10f);
+                    }
+                    break;
+                }
             }
             if (!foundSafeObject)
             {
                 Debug.Log("No se encontraron objetos seguros cerca del jugador.");
+            }
+            if (!foundUnSafeObject)
+            {
+                Debug.Log("No se encontraron objetos no seguros cerca del jugador.");
             }
         }
         else if (isPickingUp)

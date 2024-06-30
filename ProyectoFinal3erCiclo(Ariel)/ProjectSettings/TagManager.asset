@@ -8,6 +8,8 @@ TagManager:
   - UnSafeObject
   - Muros
   - PauseDetector
+  - Instructions
+  - Mochila
   layers:
   - Default
   - TransparentFX

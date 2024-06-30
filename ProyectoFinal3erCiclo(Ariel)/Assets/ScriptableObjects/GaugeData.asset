@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fccc159db92a58449e8474cc1b25664, type: 3}
   m_Name: GaugeData
   m_EditorClassIdentifier: 
-  currentValue: 100
+  currentValue: 80

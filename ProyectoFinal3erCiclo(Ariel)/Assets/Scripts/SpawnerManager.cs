@@ -21,6 +21,10 @@ public class SpawnerManager : MonoBehaviour
     public GameObject O3;
     public GameObject O4;
     public GameObject O5;
+    public GameObject O6;
+    public GameObject O7;
+    public GameObject O8;
+    public GameObject O9;
     private ListaInventadaPropia<int> indicesDisponibles;
 
 
@@ -43,6 +47,10 @@ public class SpawnerManager : MonoBehaviour
         Objects.InsertNodeAtEnd(O3);
         Objects.InsertNodeAtEnd(O4);
         Objects.InsertNodeAtEnd(O5);
+        Objects.InsertNodeAtEnd(O6);
+        Objects.InsertNodeAtEnd(O7);
+        Objects.InsertNodeAtEnd(O8);
+        Objects.InsertNodeAtEnd(O9);
     }
     private void Start()
     {

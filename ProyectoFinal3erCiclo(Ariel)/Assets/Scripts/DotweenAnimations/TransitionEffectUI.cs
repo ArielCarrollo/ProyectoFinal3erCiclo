@@ -24,4 +24,11 @@ public class TransitionEffectUI : MonoBehaviour
         Time.timeScale = 1;
         UIobject.DOMove(objetiveReverse.position, 1f);
     }
+    private void Start()
+    {
+        if(this.gameObject.tag == "Instructions")
+        {
+            Move();
+        }
+    }
 }

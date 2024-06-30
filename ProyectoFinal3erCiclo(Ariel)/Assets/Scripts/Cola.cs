@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-class Queue<T>
+public class MiCola<T>
 {
-    class Node
+    public class Node
     {
         public T Value { get; set; }
         public Node Next { get; set; }
@@ -15,9 +15,9 @@ class Queue<T>
             Previous = null;
         }
     }
-    private Node Head { get; set; }
-    private Node Tail { get; set; }
-    private int length = 0;
+    public Node Head { get; set; }
+    public Node Tail { get; set; }
+    public int length = 0;
 
     public void Enqueue(T value)
     {
@@ -56,7 +56,6 @@ class Queue<T>
             length = length - 1;
         }
     }
-
     public void PrintAllNodes()
     {
         Node tmp = Head;
