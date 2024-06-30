@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
+    public Canvas OptionsCanvas;
 
     public AudioMixer audioMixer;
     public AudioSettings audioSettings;
@@ -30,6 +31,10 @@ public class AudioManager : MonoBehaviour
         masterVolumeSlider.value = audioSettings.masterVolume;
         musicVolumeSlider.value = audioSettings.musicVolume;
         sfxVolumeSlider.value = audioSettings.sfxVolume;
+
+        SetMasterVolume(audioSettings.masterVolume);
+        SetMusicVolume(audioSettings.musicVolume);
+        SetSFXVolume(audioSettings.sfxVolume);
     }
 
     public void SetMasterVolume(float volume)

@@ -330,7 +330,7 @@ AnimatorStateMachine:
     m_Position: {x: 650, y: -120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -20445105004849743}
-    m_Position: {x: 190, y: 320, z: 0}
+    m_Position: {x: 180, y: 390, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6446803025244613147}
     m_Position: {x: 60, y: 160, z: 0}
@@ -891,7 +891,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PickUp
-  m_Speed: 2
+  m_Speed: 4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8911938856228737538}

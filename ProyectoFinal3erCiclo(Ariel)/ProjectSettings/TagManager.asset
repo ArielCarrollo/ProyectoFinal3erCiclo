@@ -6,14 +6,16 @@ TagManager:
   tags:
   - SafeObject
   - UnSafeObject
+  - Muros
+  - PauseDetector
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Muros
   - Water
   - UI
-  - 
+  - PauseDetector
   - 
   - 
   - 

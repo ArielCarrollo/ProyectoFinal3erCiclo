@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Inventory inventory;
     [SerializeField] private float MovementVelocity;
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] private GaugeData gaugeData;  
+    [SerializeField] private GaugeData gaugeData;
+    [SerializeField] private Canvas Options;
     private Vector3 cameraForward;
     private Quaternion targetRotation;
     private Vector3 forwardMovement;
@@ -21,6 +22,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        Options = AudioManager.Instance.OptionsCanvas;
+        Options.GetComponent<CanvasManager>().MenúCanvas.SetActive(false);
         anim = GetComponent<Animator>();
         cameraTransform = Camera.main.transform;
         gaugeData.ResetGauge();
@@ -136,6 +139,14 @@ public class PlayerController : MonoBehaviour
         else if (isPickingUp)
         {
             Debug.Log("Ya se está recogiendo un objeto.");
+        }
+    }
+    public void PauseGame(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Options.GetComponent<CanvasManager>().ShowAudioSettings();
+            Options.GetComponent<CanvasManager>().EnableBacktoMenu();
         }
     }
 }
