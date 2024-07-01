@@ -6,7 +6,9 @@ using TMPro;
 
 public class FinalManager : MonoBehaviour
 {
+    [SerializeField] private Canvas Options;
     public GaugeData gaugestatus;
+    public TimeData timeData;
     public MyOwnTree<Image> EndsTree;
     public Image Root;
     public Image Final1;
@@ -16,9 +18,12 @@ public class FinalManager : MonoBehaviour
     public Image Final5;
     public Image finalImage;
     public TextMeshProUGUI FinalDescriptionText;
+    public TextMeshProUGUI TimesText;
+
 
     void Start()
     {
+        Options = AudioManager.Instance.OptionsCanvas;
         EndsTree = new MyOwnTree<Image>();
         if (Root == null)
         {
@@ -37,6 +42,7 @@ public class FinalManager : MonoBehaviour
         {
             finalImage.sprite = GetFinalBasedOnGauge(gaugestatus.currentValue).sprite;
         }
+        DisplayGameTimes();
     }
 
     public Image GetFinalBasedOnGauge(float gaugeValue)
@@ -56,7 +62,7 @@ public class FinalManager : MonoBehaviour
         else if (gaugeValue <= 60f && gaugeValue > 40)
         {
             final = EndsTree.FindNode(Final3).Value;
-            FinalDescriptionText.text = "Tu mochila de emergencia tiene media utilidad, probablemente sobrevivas a con heridas que necesiten tratarse.";
+            FinalDescriptionText.text = "Tu mochila de emergencia tiene media utilidad, probablemente sobrevivas con varias heridas.";
         }
         else if (gaugeValue <= 80f && gaugeValue > 60)
         {
@@ -66,9 +72,23 @@ public class FinalManager : MonoBehaviour
         else if (gaugeValue <= 100f && gaugeValue > 80)
         {
             final = EndsTree.FindNode(Final5).Value;
-            FinalDescriptionText.text = "Tu mochila de emergencia es de total utilidad, sobreviviras e incluso ayudarás a otros.";
+            FinalDescriptionText.text = "Tu mochila de emergencia es de total utilidad, sobreviviras e incluso ayudaras a otros.";
         }
         return final;
+    }
+    void DisplayGameTimes()
+    {
+        // Construir un string con todos los tiempos y asignarlo al TextMeshProUGUI
+        string timesString = "Tiempos de finalización:\n";
+        for (int i = 0; i < timeData.Times.Length; i++)
+        {
+            timesString += "Partida " + (i + 1) + ": " + timeData.Times.ObtainNodeAtPosition(i).ToString("F2") + " segundos\n";
+        }
+        TimesText.text = timesString;
+    }
+    public void ShowMenú()
+    {
+        Options.GetComponent<CanvasManager>().MenúCanvas.SetActive(true);
     }
 }
 

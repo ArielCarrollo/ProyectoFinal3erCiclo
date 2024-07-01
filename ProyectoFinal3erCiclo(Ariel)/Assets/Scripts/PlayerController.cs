@@ -5,11 +5,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] public Inventory inventory;
     [SerializeField] private float MovementVelocity;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private GaugeData gaugeData;
     [SerializeField] private Canvas Options;
+    public AudioSource steps;
+    public AudioSource pickup;
     private Vector3 cameraForward;
     private Quaternion targetRotation;
     private Vector3 forwardMovement;
@@ -61,13 +62,21 @@ public class PlayerController : MonoBehaviour
         {
             movementInput = Vector2.zero;
         }
-
+        
         DiagonalAnimations();
     }
 
     public void OnMovement(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
+        if(context.performed)
+        {
+            steps.Play();
+        }
+        else
+        {
+            steps.Stop();
+        }
     }
 
     public void DiagonalAnimations()
@@ -118,8 +127,8 @@ public class PlayerController : MonoBehaviour
             {
                 if (hitColliders[i].tag == "SafeObject")
                 {
+                    pickup.Play();
                     foundSafeObject = true;
-
                     isPickingUp = true;
                     anim.SetBool("Pick", true);
                     currentObject = hitColliders[i].gameObject;
@@ -132,8 +141,8 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (hitColliders[i].tag == "UnSafeObject")
                 {
+                    pickup.Play();
                     foundUnSafeObject = true;
-
                     isPickingUp = true;
                     anim.SetBool("Pick", true);
                     currentObject = hitColliders[i].gameObject;
