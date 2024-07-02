@@ -20,7 +20,6 @@ public class FinalManager : MonoBehaviour
     public TextMeshProUGUI FinalDescriptionText;
     public TextMeshProUGUI TimesText;
 
-
     void Start()
     {
         Options = AudioManager.Instance.OptionsCanvas;
@@ -31,7 +30,7 @@ public class FinalManager : MonoBehaviour
             return;
         }
 
-        EndsTree.AddNode(Root, Root); 
+        EndsTree.AddNode(Root, Root);
         EndsTree.AddNode(Final1, Root);
         EndsTree.AddNode(Final2, Root);
         EndsTree.AddNode(Final3, Root);
@@ -76,20 +75,41 @@ public class FinalManager : MonoBehaviour
         }
         return final;
     }
+
     void DisplayGameTimes()
     {
-        // Construir un string con todos los tiempos y asignarlo al TextMeshProUGUI
-        string timesString = "Tiempos de finalización:\n";
+        timeData.Times = BubbleSort(timeData.Times);
+        string timesString = "Tiempos de finalizacion:\n";
         for (int i = 0; i < timeData.Times.Length; i++)
         {
-            timesString += "Partida " + (i + 1) + ": " + timeData.Times.ObtainNodeAtPosition(i).ToString("F2") + " segundos\n";
+            timesString += "Puesto " + (i + 1) + ": " + timeData.Times.ObtainNodeAtPosition(i).ToString("F2") + " segundos\n";
         }
         TimesText.text = timesString;
+        timeData.Times.PrintAllNodes();
     }
+
     public void ShowMenú()
     {
         Options.GetComponent<CanvasManager>().MenúCanvas.SetActive(true);
     }
+    static ListaInventadaPropia<float> BubbleSort(ListaInventadaPropia<float> times)
+    {
+        float tmp;
+        for (int i = 0; i < times.Length - 1; ++i)
+        {
+            for (int j = 0; j < times.Length - i - 1; ++j)
+            {
+                if (times.ObtainNodeAtPosition(j) > times.ObtainNodeAtPosition(j + 1))
+                {
+                    tmp = times.ObtainNodeAtPosition(j);
+                    times.ModifyAtPosition(times.ObtainNodeAtPosition(j + 1), j);
+                    times.ModifyAtPosition(tmp, j + 1);
+                }
+            }
+        }
+        return times;
+    }
 }
+
 
 
